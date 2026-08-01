@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScamShield AI - AI-Powered Scam Detection</title>
+    <meta name="description" content="AI-powered dashboard for detecting scams in messages and URLs.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="index.css">
+</head>
+<body>
+    <div id="toast-container"></div>
+    
+    <header class="app-header">
+        <div class="logo">
+            <span class="shield-icon">🛡️</span>
+            <h1>ScamShield <span>AI</span></h1>
+        </div>
+        <p class="tagline">AI-Powered Scam Detection</p>
+    </header>
+
+    <main class="container">
+        <nav class="tabs" aria-label="Tabs">
+            <button class="tab-btn active" data-target="message-tab" id="tab-message">Message Scanner</button>
+            <button class="tab-btn" data-target="url-tab" id="tab-url">URL Scanner</button>
+            <button class="tab-btn" data-target="history-tab" id="tab-history">Recent Scans</button>
+            <div class="tab-indicator"></div>
+        </nav>
+
+        <section id="message-tab" class="tab-content active">
+            <div class="card glass-card">
+                <div class="input-group">
+                    <label for="message-input">Message Content</label>
+                    <textarea id="message-input" placeholder="Paste suspicious SMS, WhatsApp, or email message here..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label for="message-source">Source</label>
+                    <select id="message-source">
+                        <option value="sms">SMS</option>
+                        <option value="whatsapp">WhatsApp</option>
+                        <option value="email">Email</option>
+                        <option value="other">Other</option>
+                    </select>
+                </div>
+                <button id="scan-message-btn" class="primary-btn">
+                    <span class="btn-text">Scan Message</span>
+                    <span class="loader"></span>
+                </button>
+            </div>
+            <div id="message-results" class="results-container hidden"></div>
+        </section>
+
+        <section id="url-tab" class="tab-content">
+            <div class="card glass-card">
+                <div class="input-group">
+                    <label for="url-input">URL to Scan</label>
+                    <input type="url" id="url-input" placeholder="Enter suspicious URL... (e.g., https://example.com)">
+                </div>
+                <button id="scan-url-btn" class="primary-btn">
+                    <span class="btn-text">Scan URL</span>
+                    <span class="loader"></span>
+                </button>
+            </div>
+            <div id="url-results" class="results-container hidden"></div>
+        </section>
+
+        <section id="history-tab" class="tab-content">
+            <div class="card glass-card">
+                <h2>Recent Scans</h2>
+                <div id="history-container" class="history-list">
+                    <div class="loading-state">Loading history...</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="app-footer">
+        <p>ScamShield AI v0.1.0 — Stay Safe Online</p>
+    </footer>
+
+    <script src="index.js"></script>
+</body>
+</html>
