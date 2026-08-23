@@ -5,11 +5,13 @@ from app.config import settings
 from app.database import connect_db, close_db
 from app.routers import scan, url
 
+
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await connect_db()
     yield
     await close_db()
+
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -20,7 +22,7 @@ app = FastAPI(
 
 app.add_middleware(
     CORSMiddleware,
-allow_origins=["https://scam-shield-ai-orpin.vercel.app"],
+    allow_origins=settings.CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -28,6 +30,7 @@ allow_origins=["https://scam-shield-ai-orpin.vercel.app"],
 
 app.include_router(scan.router)
 app.include_router(url.router)
+
 
 @app.get("/health")
 async def health_check():
