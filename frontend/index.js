@@ -1,4 +1,4 @@
-const API_BASE = 'https://scamshield-ai-production-6e09.up.railway.app';
+const API_BASE = 'https://scamshield-ai-zs40.onrender.com';
 
 document.addEventListener('DOMContentLoaded', () => {
     initTabs();
