@@ -25,6 +25,6 @@ class MessageScanResult(BaseModel):
     source: Optional[str] = None
     risk_score: float = Field(..., ge=0, le=100, description="Overall risk score 0-100")
     risk_level: RiskLevel
-    indicators: list[RiskIndicator] = []
+    indicators: list[RiskIndicator] = Field(default_factory=list)
     explanation: str = Field(..., description="Human-readable summary")
     scanned_at: datetime = Field(default_factory=datetime.utcnow)

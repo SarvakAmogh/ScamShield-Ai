@@ -1,9 +1,12 @@
+import logging
 from app.analyzers.rule_based import RuleBasedAnalyzer
 from app.analyzers.url_checker import URLChecker
 from app.models.scan import MessageScanRequest, MessageScanResult, RiskIndicator, RiskLevel
 from app.models.url import URLScanRequest, URLScanResult, URLFlag
 from app.database import get_database
 from datetime import datetime
+
+logger = logging.getLogger(__name__)
 
 rule_analyzer = RuleBasedAnalyzer()
 url_checker = URLChecker()
@@ -35,7 +38,7 @@ async def scan_message(request: MessageScanRequest) -> MessageScanResult:
             insert_result = await db.scans.insert_one(doc)
             scan_result.id = str(insert_result.inserted_id)
     except Exception:
-        pass  # DB persistence is best-effort for now
+        logger.exception("Failed to persist message scan to DB")  # DB persistence is best-effort for now
     return scan_result
 
 async def scan_url(request: URLScanRequest) -> URLScanResult:
@@ -56,7 +59,7 @@ async def scan_url(request: URLScanRequest) -> URLScanResult:
             insert_result = await db.url_scans.insert_one(doc)
             scan_result.id = str(insert_result.inserted_id)
     except Exception:
-        pass
+        logger.exception("Failed to persist URL scan to DB")
     return scan_result
 
 async def get_recent_scans(limit: int = 20) -> list[dict]:
@@ -70,5 +73,5 @@ async def get_recent_scans(limit: int = 20) -> list[dict]:
                 scans.append(doc)
             return scans
     except Exception:
-        pass
+        logger.exception("Failed to fetch recent scans from DB")
     return []

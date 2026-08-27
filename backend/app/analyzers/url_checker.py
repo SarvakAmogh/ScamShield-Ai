@@ -11,7 +11,15 @@ class URLChecker:
             domain = parsed.netloc.lower()
             scheme = parsed.scheme.lower()
             path = parsed.path.lower()
-            
+
+            # If netloc is empty the input may be scheme-less like 'example.com/path'.
+            # Try reparsing with a default scheme to be more tolerant of user input.
+            if not domain:
+                reparsed = urllib.parse.urlparse("http://" + url_str)
+                domain = reparsed.netloc.lower()
+                scheme = reparsed.scheme.lower()
+                path = reparsed.path.lower()
+
             # Check is_ip_based
             if re.match(r"^\d+\.\d+\.\d+\.\d+(:\d+)?$", domain):
                 flags.append({"flag": "is_ip_based", "description": "URL uses IP address instead of domain name", "severity": 0.8})
@@ -31,7 +39,8 @@ class URLChecker:
                 flags.append({"flag": "no_https", "description": "URL uses unencrypted http:// connection", "severity": 0.3})
 
             # Check excessive_subdomains
-            if domain.count('.') > 3:
+            # Consider 3 or more dots in the hostname to be excessive for our heuristics.
+            if domain.count('.') >= 3:
                 flags.append({"flag": "excessive_subdomains", "description": "URL has excessive subdomains", "severity": 0.5})
 
             # Check typosquatting

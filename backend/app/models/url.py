@@ -16,7 +16,7 @@ class URLScanResult(BaseModel):
     url: str
     risk_score: float = Field(..., ge=0, le=100)
     risk_level: RiskLevel
-    flags: list[URLFlag] = []
-    domain_info: dict = {}
+    flags: list[URLFlag] = Field(default_factory=list)
+    domain_info: dict = Field(default_factory=dict)
     explanation: str
     scanned_at: datetime = Field(default_factory=datetime.utcnow)
